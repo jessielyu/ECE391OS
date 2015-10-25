@@ -7,10 +7,22 @@
 #define NUM_COLS 80
 #define NUM_ROWS 25
 #define ATTRIB 0x7
-
+#define ATT_BLUE 0x16
+#define ATT_BLUESCREEN 30
+ 
 static int screen_x;
 static int screen_y;
 static char* video_mem = (char *)VIDEO;
+
+
+void
+blue_screen(void)
+{
+	int32_t i;
+	for(i=0; i<NUM_ROWS*NUM_COLS; i++) {
+        *(uint8_t *)(video_mem + (i << 1) + 1) = ATT_BLUESCREEN;
+    }
+}
 
 /*
 * void clear(void);
@@ -560,7 +572,9 @@ strncpy(int8_t* dest, const int8_t* src, uint32_t n)
 
 void
 test_interrupts(void)
+
 {
+	printf("yo we can handle interrupts now\n");
 	int32_t i;
 	for (i=0; i < NUM_ROWS*NUM_COLS; i++) {
 		video_mem[i<<1]++;

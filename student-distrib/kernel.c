@@ -144,8 +144,16 @@ entry (unsigned long magic, unsigned long addr)
 		ltr(KERNEL_TSS);
 	}
 
+
+	printf("checkpoint 0\n");
+	isr_set();
+	/* Load the IDT address and size into IDTR*/
+	lidt(idt_desc_ptr);
+	//printf("Finished loading IDTR\n");
 	/* Init the PIC */
-	i8259_init();
+	/* Init the PIC */
+	
+	// i8259_init();
 
 	/* Initialize devices, memory, filesystem, enable device interrupts on the
 	 * PIC, any other initialization stuff... */
@@ -154,8 +162,8 @@ entry (unsigned long magic, unsigned long addr)
 	/* Do not enable the following until after you have set up your
 	 * IDT correctly otherwise QEMU will triple fault and simple close
 	 * without showing you any output */
-	/*printf("Enabling Interrupts\n");
-	sti();*/
+	printf("Enabling Interrupts\n");
+	sti();
 
 	/* Execute the first program (`shell') ... */
 
